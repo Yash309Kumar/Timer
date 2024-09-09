@@ -1,0 +1,145 @@
+<html>
+<head>
+	<title>Timer</title>
+</head>
+<header>
+<H1>JAVA-SCRIPT TIMER</H1>
+
+<body>
+<div class="timer">
+  <h1 id="timer-display">00:00:00</h1>
+  <div class="timer-controls">
+    <button id="start-button">Start</button>
+    <button id="stop-button">Stop</button>
+    <button id="reset-button">Reset</button>
+  </div>
+</div>
+<button id="modeX">Change Mode!</button>
+</body>
+
+<style>
+body {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#timer-display {
+  font-size: 4rem;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+button {
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2E8B57;
+}
+
+#modeX {
+  color: #fff;
+  margin: 30px;
+  background-color: gray;
+}
+
+.dark {
+	color: white;
+	background-color: black;
+}
+
+.light {
+	color: black;
+	background-color: white;
+}
+</style>
+
+<script>
+
+const timerDisplay = document.getElementById('timer-display');
+const startButton = document.getElementById('start-button');
+const stopButton = document.getElementById('stop-button');
+const resetButton = document.getElementById('reset-button');
+
+let timerId;
+let startTime;
+let elapsedTime = 0;
+
+function formatTime(time) {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
+
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function updateTimer() {
+  const currentTime = Math.floor((Date.now() - startTime) / 1000) + elapsedTime;
+  timerDisplay.textContent = formatTime(currentTime);
+}
+
+function startTimer() {
+  startTime = Date.now();
+  timerId = setInterval(updateTimer, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerId);
+  elapsedTime += Math.floor((Date.now() - startTime) / 1000);
+}
+
+function resetTimer() {
+  clearInterval(timerId);
+  elapsedTime = 0;
+  timerDisplay.textContent = '00:00:00';
+}
+
+startButton.addEventListener('click', startTimer);
+stopButton.addEventListener('click', stopTimer);
+resetButton.addEventListener('click', resetTimer);
+
+//DarkMode
+let modeBtn = document.querySelector("#modeX");
+let currMode = "light";
+let body = document.querySelector("body");
+modeBtn.addEventListener("click", () => {
+	//console.log("You are try to change Mode");
+	if(currMode === "light")
+	{
+		currMode = "dark";
+		//document.querySelector("body").style.backgroundColor = "black";
+		body.classList.add("dark");
+		body.classList.remove("light");
+	}
+	else{
+		currMode = "light";
+		//document.querySelector("body").style.backgroundColor = "white";
+		body.classList.add("light");
+		body.classList.remove("dark");
+	}
+	console.log(currMode);
+});
+</script>
+</html>
+<hr>
+
